@@ -1,0 +1,15 @@
+Algoritmo Nombredepersona
+// Desarrolle un algoritmo que permita el ingreso del nombre de la persona y
+//el apellido, y muestre por pantalla el nombre y apellido con una sola
+//instrucción.
+
+Definir nombre,apellido Como Caracter
+
+Escribir "Ingrese su nombre"
+Leer nombre;
+Escribir "Ingrese su apellido"
+leer apellido
+
+Escribir "Usted se llama ",nombre," " apellido
+
+FinAlgoritmo
