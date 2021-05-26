@@ -1,3 +1,7 @@
+//2. Desarrollar un algoritmo que llene un arreglo con 20 números de forma aleatoria entre 0 y 100 . Luego busque en el arreglo, un número generado
+//de forma aleatoria entre 0 y 100, y finalmente muestre: a)- El número a
+//	buscar, b)- El arreglo, c)- Si encontró el número, la posición donde fue
+//		hallado, o d)- Si no encontró el número.
 Algoritmo numero_azar
 	
 	Definir num_azar,x,cont,tamanio_arreglo Como Entero

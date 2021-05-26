@@ -1,3 +1,5 @@
+//1. Desarrollar un algoritmo que permita almacenar en un arreglo los cien primeros números pares.
+//Luego recorrer el arreglo y mostrar los números que contiene el arreglo.
 Algoritmo numeros_pares
 	
 	Definir z,tamanio_arreglo Como Entero
