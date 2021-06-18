@@ -1,0 +1,414 @@
+	Algoritmo mina
+		Definir opc Como Entero
+		Definir usuario Como Caracter
+		
+		Repetir
+			Limpiar Pantalla
+			Escribir "<<<<<<<Bienvenido a nuestro Buscaminas>>>>>>>"
+			Escribir "Cual es tu nombre?"
+			Leer usuario
+			Escribir "1. Empezar el juego"
+			Escribir "2. Instrucciones"
+			Escribir "3. Creditos"
+			Escribir "4. Salir"
+			Leer opc
+			
+			Segun opc Hacer
+				1:	
+					
+					Escribir usuario, " seleccione una dificultad"
+					Escribir "1. Facil"
+					Escribir "2. Medio"
+					Escribir "3. Dificil"
+					Leer dificultad
+					
+					Segun dificultad Hacer
+						1:
+							Definir eje_x,eje_y,cont,total Como Entero
+							Dimension tablero[3,3],tablero_2[3,3],array_mina[20], array_2_mina[20];
+							
+							inicializacion_tablero_facil(tablero, tablero_2)
+							generacion_minas_facil(tablero_2, cont, array_mina, array_2_mina)
+							
+							total<-9-cont
+							Escribir "Para ganar tenes que adivinar ",total," incognitas, esquivando las ",cont," minas"
+							
+							Repetir //escribe los valores ingresados por teclado
+								Escribir "Para salir pulse 10 y 10"
+								
+								ingresar_eje_x_facil(eje_x)
+								
+								ingresar_eje_y_facil(eje_y)
+								
+								tablero_jugando_facil(tablero, eje_x, eje_y)
+								
+								total<-total-1
+								
+							Hasta Que (tablero_2[eje_x,eje_y]>1 o total<1) 
+							
+							ganador(total)
+							perdedor_facil(eje_x, eje_y, tablero_2)
+							
+						2:
+							Definir eje_x,eje_y,cont,total Como Entero
+							Dimension tablero[7,7],tablero_2[7,7],array_mina[20], array_2_mina[20];
+							
+							inicializacion_tableromedio(tablero, tablero_2)
+							
+							generacion_minas_medio(tablero_2, cont, array_2_mina, array_mina)
+							
+							total<-49-cont
+							Escribir "Para ganar tenes que adivinar ",total," incognitas, esquivando las ",cont," minas"
+							
+							Repetir //escribe los valores ingresados por teclado
+								Escribir "Para salir pulse 10 y 10"
+								
+								ingresar_eje_x_medio(eje_x)
+								
+								ingresar_eje_y_medio(eje_y)
+								
+								tablero_jugando_medio(tablero, eje_x, eje_y)
+								
+								total<-total-1
+								
+							Hasta Que (tablero_2[eje_x,eje_y]>1 o total==0) 
+							
+							ganador(total)
+							
+							perdedor_medio(eje_x, eje_y, tablero_2)
+							
+						3:
+							Definir eje_x,eje_y,cont,total Como Entero
+							Dimension tablero[11,11],tablero_2[11,11], array_mina[30], array_2_mina[30]
+							
+							inicializacion_tablero(tablero, tablero_2)
+							
+							generacion_minas(tablero_2, cont, array_mina, array_2_mina)
+							
+							total<-100-cont
+							Escribir "Para ganar tenes que adivinar ",total," incognitas, esquivando las ",cont," minas"
+							
+							Repetir //escribe los valores ingresados por teclado
+								Escribir "Para salir pulse 10 y 10"
+								
+								ingresar_eje_x(eje_x)
+								
+								ingresar_eje_y(eje_y)
+								
+								tablero_jugando(tablero, eje_x, eje_y)
+								
+								total<-total-1
+								
+							Hasta Que (tablero_2[eje_x,eje_y]>1 o total==0) 
+							
+							ganador(total)
+							
+							perdedor(eje_x, eje_y, tablero_2)
+							
+						De Otro Modo:
+							Escribir "ERROR"
+					Fin Segun
+					
+				2:
+					Escribir "El juego consiste en despejar todas las casillas de una pantalla que no oculten una mina"
+					Escribir "Los 0 son las incognitas,los 1 las casillas descubiertas, y los 2 las minas"
+					Escribir "Si se descubre una casilla con una mina se pierde la partida"
+					Escribir "Si encuentra todas las incognitas sin toparse con ninguna mina gana"
+				3:
+					Escribir "Alumnos desarrolladores del juego"
+					Escribir "Adrian Sarmiento"
+					Escribir "Enzo Willatowski"
+				4:
+					Escribir "Gracias por jugar"
+					Escribir "Vuelva pronto!!!"
+					
+				De Otro Modo:
+					Escribir "Opcion no valida"
+			FinSegun
+			
+		Hasta Que opc<5 o opc>0
+FinAlgoritmo
+
+//opcion 1:si ganas
+SubProceso ganador (total Por valor)
+	Si total==0 Entonces //salida_1: si gana
+		Escribir "Felicidades ", usuario
+		Escribir "GANO!!!"
+	fin si
+FinSubProceso
+
+//----------------------------------------------------------------------------------------------DIFICIL-----------------------------------------------------------------------------//
+
+//inicializacion del tablero
+SubProceso inicializacion_tablero (tablero Por Referencia,tablero_2 Por Referencia)
+	Para i<-0 Hasta 9 Con Paso 1 Hacer 
+		Para j<-0 Hasta 9 Con Paso 1 Hacer
+			tablero[i,j]<-0
+			tablero_2[i,j]<-0
+			Escribir sin saltar "|",tablero[i,j],"|", " ";
+		Fin Para
+		Escribir " ",i," ";
+	Fin Para
+FinSubProceso
+
+//genera las minas
+SubProceso generacion_minas (tablero_2 Por Referencia, cont Por Referencia, array_mina por referencia, array_2_mina por referencia)
+	Definir k,i Como Entero
+	k<-0
+	
+	Para i<-0 Hasta 20 Con Paso 1 Hacer
+		array_mina[i]<-azar(9)+0
+	Fin Para
+	
+	Para i<-0 Hasta 20 Con Paso 1 Hacer
+		array_2_mina[i]<-azar(9)+0
+	Fin Para
+	
+	Repetir
+		i<-k
+		Repetir
+			Si tablero_2[array_mina[k], array_2_mina[i]]==2 Entonces
+				cont<-cont-1
+			Fin Si
+			tablero_2[array_mina[k], array_2_mina[i]]<-2
+			cont<-cont+1
+			i<-1
+		Hasta Que i==1
+		k<-k+1
+	Hasta Que k==20
+
+FinSubProceso
+
+//ingresar eje x
+SubProceso ingresar_eje_x (eje_x Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje X" 
+		Leer eje_x
+	Hasta Que eje_x<=9 y eje_x>=0
+FinSubProceso
+
+//ingresar eje y
+SubProceso ingresar_eje_y (eje_y Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje Y" //validacion
+		Leer eje_y
+	Hasta Que eje_y<=9 y eje_y>=0
+FinSubProceso
+
+//jugando
+SubProceso tablero_jugando (tablero Por referencia, eje_x Por valor, eje_y Por valor)
+	
+	Escribir " 0   1   2   3   4   5   6   7   8   9   X";
+	
+	Para i<-0 Hasta 9 Con Paso 1 Hacer
+		Para j<-0 Hasta 9 Con Paso 1 Hacer
+			tablero[eje_x,eje_y]<-1
+			Escribir sin saltar "|",tablero[i,j],"|", " ";
+		Fin Para
+		Escribir " ",i," ";
+	Fin Para
+FinSubProceso
+
+//opcion 2: si perdes
+SubProceso perdedor (eje_x por valor, eje_y por valor, tablero_2 Por Referencia)
+	Si tablero_2[eje_x,eje_y]>1 Entonces
+		Borrar Pantalla
+		Escribir "HAS PISADO UNA MINA!!"; //salida_2:si pierde
+		Escribir "GAME OVER";
+		
+		Escribir " 0   1   2   3   4   5   6   7   8   9   X";
+		
+		Para i<-0 Hasta 9 Con Paso 1 Hacer
+			Para j<-0 Hasta 9 Con Paso 1 Hacer
+				Escribir sin saltar "|",tablero_2[i,j],"|", " "
+			Fin Para
+			Escribir " ",i," "
+		fin para
+	Fin Si
+FinSubProceso
+
+//----------------------------------------------------------------------------------------------------FACIL-----------------------------------------------------------------------//
+
+//tablero facil
+SubProceso inicializacion_tablero_facil (tablero Por Referencia, tablero_2 Por Referencia)
+	Escribir " 0   1   2   X";
+	
+	Para i<-0 Hasta 2 Con Paso 1 Hacer 
+		Para j<-0 Hasta 2 Con Paso 1 Hacer
+			tablero[i,j]<-0
+			tablero_2[i,j]<-0
+			Escribir sin saltar "|",tablero[i,j],"|", " ";
+		Fin Para
+		Escribir " ",i," ";
+	Fin Para
+FinSubProceso
+
+//genera las minas
+SubProceso generacion_minas_facil (tablero_2 Por Referencia, cont Por Referencia, array_mina por referencia, array_2_mina por referencia)
+	Definir k,i Como Entero
+	k<-0
+	
+	Para i<-0 Hasta 5 Con Paso 1 Hacer
+		array_mina[i]<-azar(2)+0
+	Fin Para
+	
+	Para i<-0 Hasta 5 Con Paso 1 Hacer
+		array_2_mina[i]<-azar(2)+0
+	Fin Para
+	
+	Repetir
+		i<-k
+		Repetir
+			Si tablero_2[array_mina[k], array_2_mina[i]]==2 Entonces
+				cont<-cont-1
+			Fin Si
+			tablero_2[array_mina[k], array_2_mina[i]]<-2
+			i<-1
+			cont<-cont+1
+		Hasta Que i==1
+		k<-k+1
+	Hasta Que k==3
+	
+FinSubProceso
+
+//ingresar eje x
+SubProceso ingresar_eje_x_facil (eje_x Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje X" 
+		Leer eje_x
+	Hasta Que eje_x<=2 y eje_x>=0
+FinSubProceso
+
+//ingresar eje y
+SubProceso ingresar_eje_y_facil (eje_y Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje Y" //validacion
+		Leer eje_y
+	Hasta Que eje_y<=2 y eje_y>=0
+FinSubProceso
+
+//jugando
+SubProceso tablero_jugando_facil (tablero Por referencia, eje_x Por valor, eje_y Por valor)
+	
+	Escribir " 0   1   2   X";
+	
+	Para i<-0 Hasta 2 Con Paso 1 Hacer
+		Para j<-0 Hasta 2 Con Paso 1 Hacer
+			tablero[eje_y,eje_x]<-1
+			Escribir sin saltar "|",tablero[i,j],"|", " ";
+		Fin Para
+		Escribir " ",i," ";
+	Fin Para
+FinSubProceso
+
+//opcion 2: si perdes
+SubProceso perdedor_facil (eje_x por valor, eje_y por valor, tablero_2 Por Referencia)
+	Si tablero_2[eje_y,eje_x]>1 Entonces
+		Borrar Pantalla
+		Escribir "HAS PISADO UNA MINA!!"; 
+		Escribir "GAME OVER";
+		
+		Escribir " 0   1   2   X";
+		
+		Para i<-0 Hasta 2 Con Paso 1 Hacer
+			Para j<-0 Hasta 2 Con Paso 1 Hacer
+				Escribir sin saltar "|",tablero_2[i,j],"|", " "
+			Fin Para
+			Escribir " ",i," "
+		fin para
+	Fin Si
+FinSubProceso
+
+//----------------------------------------------------------------------------------MEDIO-----------------------------------------------------------------------------//
+
+//inicializacion del tablero
+SubProceso inicializacion_tableromedio (tablero Por Referencia,tablero_2 Por Referencia)
+	Para i<-0 Hasta 6 Con Paso 1 Hacer 
+		Para j<-0 Hasta 6 Con Paso 1 Hacer
+			tablero[i,j]<-0
+			tablero_2[i,j]<-0
+			Escribir sin saltar "|",tablero[i,j],"|", " ";
+		Fin Para
+		Escribir " ",i," ";
+	Fin Para
+FinSubProceso
+
+//genera las minas
+SubProceso generacion_minas_medio (tablero_2 Por Referencia, cont Por Referencia, array_2_mina Por Referencia, array_mina Por Referencia)
+	Definir k,i Como Entero
+	k<-0
+	
+	Para i<-0 Hasta 7 Con Paso 1 Hacer
+		array_mina[i]<-azar(6)+0
+	Fin Para
+	
+	Para i<-0 Hasta 7 Con Paso 1 Hacer
+		array_2_mina[i]<-azar(6)+0
+	Fin Para
+	
+	Repetir
+		i<-k
+		Repetir
+			Si tablero_2[array_mina[k], array_2_mina[i]]==2 Entonces
+				cont<-cont-1
+			Fin Si
+			tablero_2[array_mina[k], array_2_mina[i]]<-2
+			i<-1
+			cont<-cont+1
+		Hasta Que i==1
+		k<-k+1
+	Hasta Que k==7
+FinSubProceso
+
+//ingresar eje x
+SubProceso ingresar_eje_x_medio (eje_x Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje X" 
+		Leer eje_x
+	Hasta Que eje_x<=6 y eje_x>=0
+FinSubProceso
+
+//ingresar eje y
+SubProceso ingresar_eje_y_medio (eje_y Por Referencia)
+	Repetir
+		Escribir "Ingrese el valor del eje Y" //validacion
+		Leer eje_y
+	Hasta Que eje_y<=6 y eje_y>=0
+FinSubProceso
+
+//jugando
+SubProceso tablero_jugando_medio (tablero Por referencia, eje_x Por valor, eje_y Por valor)
+	Si tablero[eje_x,eje_y]>1 Entonces
+		Escribir "HAS PISADO UNA MINA!";
+		Escribir "GAME OVER";
+	SiNo
+		Escribir " 0   1   2   3   4   5   6   X";
+		
+		Para i<-0 Hasta 6 Con Paso 1 Hacer
+			Para j<-0 Hasta 6 Con Paso 1 Hacer
+				tablero[eje_x,eje_y]<-1
+				Escribir sin saltar "|",tablero[i,j],"|", " ";
+			Fin Para
+			Escribir " ",i," ";
+		Fin Para
+		
+	Fin Si
+FinSubProceso
+
+//opcion 2: si perdes
+SubProceso perdedor_medio (eje_x por valor, eje_y por valor, tablero_2 Por Referencia)
+	Si tablero_2[eje_x,eje_y]>1 Entonces
+		Borrar Pantalla
+		Escribir "HAS PISADO UNA MINA!!"; //salida_2:si pierde
+		Escribir "GAME OVER";
+		
+		Escribir " 0   1   2   3   4   5   6    X";
+		
+		Para i<-0 Hasta 6 Con Paso 1 Hacer
+			Para j<-0 Hasta 6 Con Paso 1 Hacer
+				Escribir sin saltar "|",tablero_2[i,j],"|", " "
+			Fin Para
+			Escribir " ",i," "
+		fin para
+	Fin Si
+FinSubProceso	
